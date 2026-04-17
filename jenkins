@@ -1,21 +1,23 @@
-# STEP-1: INSTALLING GIT AND MAVEN 
-# Removed java-1.8.0 as it is deprecated for modern Jenkins versions
+# STEP-1: INSTALL GIT & MAVEN
 sudo yum install git maven -y
 
-# STEP-2: GETTING THE REPO
+# STEP-2: INSTALL JAVA 21 (REQUIRED FOR NEW JENKINS)
+sudo yum install java-21-amazon-corretto-devel -y
+
+# Verify Java
+java -version
+
+# STEP-3: ADD JENKINS REPO
 sudo wget -O /etc/yum.repos.d/jenkins.repo https://pkg.jenkins.io/redhat-stable/jenkins.repo
 sudo rpm --import https://pkg.jenkins.io/redhat-stable/jenkins.io-2023.key
 
-# STEP-3: INSTALLING JAVA 17 AND JENKINS
-# Jenkins now requires Java 11 or 17. Java 17 is the preferred LTS version.
-sudo yum install java-17-amazon-corretto-devel -y
+# STEP-4: INSTALL JENKINS
 sudo yum install jenkins -y
 
-# STEP-4: CONFIGURING JAVA ALTERNATIVES
-# This ensures the system uses Java 17 by default
-sudo update-alternatives --set java /usr/lib/jvm/java-17-amazon-corretto.x86_64/bin/java
+# STEP-5: SET JAVA 21 AS DEFAULT
+sudo alternatives --set java /usr/lib/jvm/java-21-amazon-corretto.x86_64/bin/java
 
-# STEP-5: STARTING AND ENABLING JENKINS
+# STEP-6: START & ENABLE JENKINS
 sudo systemctl daemon-reload
 sudo systemctl enable jenkins
 sudo systemctl start jenkins
