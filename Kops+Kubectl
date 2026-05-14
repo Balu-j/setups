@@ -1,0 +1,25 @@
+# Download kubectl
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+
+# Download KOPS
+wget https://github.com/kubernetes/kops/releases/download/v1.25.0/kops-linux-amd64
+
+# Give Execute Permissions
+chmod +x kubectl
+chmod +x kops-linux-amd64
+
+
+# Move Binaries to System Path
+sudo mv kubectl /usr/local/bin/kubectl
+sudo mv kops-linux-amd64 /usr/local/bin/kops
+
+
+# Add Path Variable
+echo 'export PATH=$PATH:/usr/local/bin/' >> ~/.bashrc
+
+# Reload Bash Configuration
+source ~/.bashrc
+
+# Verify Installations
+kubectl version --client
+kops version
