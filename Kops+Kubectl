@@ -1,25 +1,30 @@
-# Download kubectl
-curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl
+#!/bin/bash
 
-# Download KOPS
-wget https://github.com/kubernetes/kops/releases/download/v1.25.0/kops-linux-amd64
+aws configure
 
-# Give Execute Permissions
-chmod +x kubectl
-chmod +x kops-linux-amd64
+curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
+wget https://github.com/kubernetes/kops/releases/download/v1.33.0/kops-linux-amd64
 
-# Move Binaries to System Path
+chmod +x kubectl kops-linux-amd64
+
 sudo mv kubectl /usr/local/bin/kubectl
 sudo mv kops-linux-amd64 /usr/local/bin/kops
 
-
-# Add Path Variable
-echo 'export PATH=$PATH:/usr/local/bin/' >> ~/.bashrc
-
-# Reload Bash Configuration
+echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
 source ~/.bashrc
 
-# Verify Installations
-kubectl version --client
-kops version
+export KOPS_STATE_STORE=s3://balajipractice.k8s.local
+
+kops create cluster \
+  --name balajipractice.k8s.local \
+  --cloud aws \
+  --zones us-east-1a \
+  --control-plane-count 1 \
+  --control-plane-size c7i-flex.large \
+  --node-count 2 \
+  --node-size c7i-flex.large \
+  --image ami-009be0edec0817ffd  \
+  --dns private
+
+kops update cluster --name rahamss.k8s.local --yes --admin
