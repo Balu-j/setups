@@ -17,14 +17,14 @@ source ~/.bashrc
 export KOPS_STATE_STORE=s3://balajipracticee.k8s.local
 
 kops create cluster \
-  --name balajipractice.k8s.local \
+  --name balajipracticee.k8s.local \
   --cloud aws \
   --zones us-east-1a \
   --control-plane-count 1 \
   --control-plane-size c7i-flex.large \
   --node-count 2 \
   --node-size c7i-flex.large \
-  --image ami-0cca150d127c2216f\
+  --image ami-0cca150d127c2216f \
   --dns private
 
-kops update cluster --name balajipractice.k8s.local --yes --admin
+kops update cluster --name balajipracticee.k8s.local --yes --admin
