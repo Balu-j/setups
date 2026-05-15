@@ -2,6 +2,15 @@
 
 aws configure
 
+aws s3api create-bucket \
+  --bucket balajipracticee.k8s.local \
+  --region us-east-1
+
+aws s3api put-bucket-versioning \
+  --bucket balajipracticee.k8s.local \
+  --region us-east-1 \
+  --versioning-configuration Status=Enabled
+
 curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 
 wget https://github.com/kubernetes/kops/releases/download/v1.33.0/kops-linux-amd64
@@ -12,6 +21,7 @@ sudo mv kubectl /usr/local/bin/kubectl
 sudo mv kops-linux-amd64 /usr/local/bin/kops
 
 echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc
+echo 'export KOPS_STATE_STORE=s3://balajipracticee.k8s.local' >> ~/.bashrc
 source ~/.bashrc
 
 export KOPS_STATE_STORE=s3://balajipracticee.k8s.local
@@ -24,7 +34,6 @@ kops create cluster \
   --control-plane-size c7i-flex.large \
   --node-count 2 \
   --node-size c7i-flex.large \
-  --image ami-0cca150d127c2216f \
   --dns private
 
 kops update cluster --name balajipracticee.k8s.local --yes --admin
