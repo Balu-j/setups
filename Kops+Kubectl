@@ -34,7 +34,6 @@ kops create cluster \
   --control-plane-size c7i-flex.large \
   --node-count 2 \
   --node-size c7i-flex.large \
-  --image ami-0cca150d127c2216f \
   --dns private
 
 kops update cluster --name bbalajipracticee.k8s.local --yes --admin
